@@ -1,23 +1,50 @@
-<html>
-  <body>
-    <h1>Sign Up</h1>
-    <form>
-        <label>Voornaam:</label>
-          <input type="text" name="voornaam" required><br>
-        <label>Tussenvoegsel:</label>
-          <input type="text" name="Tussenvoegsel"><br>
-        <label>Achtrnaam:</label>
-          <input type="text" name="achternaam" required><br>
-        <label>E-mail:</label>
-          <input type="email" name="e-mail" required><br>
-        <label>Gebruikersnaam:</label>
-          <input type="text" name="gebruikersnaam" required><br>
-        <label>Wachtwoord:</label>
-          <input type="password" name="wachtwoord" required><br>
-        <label>Herhaal wachtwoord:</label>
-          <input type="password" name="herhaal-wachtwoord" required><br>
-        <button type="submit" href="index.php">Sign in</button>
-    </form>
-  </body>
-</html>
+<?php
+
+include 'database.php';
+include 'helperfunctions.php';
+
+if($_POST['submit']){
+  // maak een array met alle name attributes
+  $fields = [
+    	"uname",
+      "pword"
+  ];
+
+$obj = new HelperFunctions();
+$no_error = $obj->has_provided_input_for_required_fields($fields);
+
+  // in case of field values, proceed, execute insert
+if($no_error){
+  $username = $_POST['uname'];
+  $password = $_POST['pword'];
+
+  $db = new database('localhost', 'root', '', 'project1', 'utf8');
+  $db->authenticate_user($username, $password);
+}
+}
+
+ ?>
+
+
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>login pagina</title>
+	</head>
+	<body>
+		<form id='login' action='login.php' method='post' accept-charset='UTF-8'>
+			<fieldset >
+				<legend>Login</legend>
+				<input type="text" name="uname" placeholder="Username" required/>
+				<input type="password" name="pword" placeholder="Password" required/>
+				<input type='submit' name="submit" value='submit' />
+			</fieldset>
+		  	<p>
+		  		Not a member? <a href="register.php">Sign Up</a>
+		  	</p>
+		  	<p>
+		  		Reset Password? <a href="reset.php">Reset</a>
+		  	</p>
+		</form>
+	</body>
 </html>
